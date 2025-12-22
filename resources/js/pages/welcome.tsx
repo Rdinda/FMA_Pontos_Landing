@@ -121,13 +121,15 @@ export default function Welcome() {
                                         <span className="relative z-10">Baixar Agora</span>
                                     </button>
 
-                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#5FA8A8]/10 border border-[#5FA8A8]/20 text-[#5FA8A8] text-sm font-medium">
-                                        <span className="relative flex h-2 w-2">
-                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5FA8A8] opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#5FA8A8]"></span>
-                                        </span>
-                                        Novo: Versão 1.5 Disponível
-                                    </div>
+                                    {latestRelease && (
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#5FA8A8]/10 border border-[#5FA8A8]/20 text-[#5FA8A8] text-sm font-medium">
+                                            <span className="relative flex h-2 w-2">
+                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5FA8A8] opacity-75"></span>
+                                                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#5FA8A8]"></span>
+                                            </span>
+                                            Novo: Versão {latestRelease.tag_name} Disponível
+                                        </div>
+                                    )}
                                 </motion.div>
                             </div>
 
