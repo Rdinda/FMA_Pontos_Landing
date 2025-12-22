@@ -2,6 +2,7 @@
 import { Head } from '@inertiajs/react';
 import { Download, Github, Smartphone, BookOpen, Layout, Zap, RefreshCw, Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 interface GithubRelease {
     id: number;
@@ -63,52 +64,130 @@ export default function Welcome() {
             <div className="min-h-screen bg-[#000000] text-[#F2F2F2] font-sans selection:bg-[#5FA8A8] selection:text-black overflow-x-hidden" style={{ fontFamily: 'Inter, sans-serif' }}>
 
                 {/* Hero Section */}
-                <section className="relative min-h-screen flex flex-col items-center justify-center p-6 text-center overflow-hidden">
-                    {/* Background Elements */}
-                    <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-                        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#5FA8A8] rounded-full blur-[120px] opacity-20 animate-pulse"></div>
-                        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#A7D6D1] rounded-full blur-[120px] opacity-10"></div>
+                {/* Hero Section */}
+                <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#000000]">
+                    {/* Atmospheric Background */}
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                        <motion.div
+                            animate={{ opacity: [0.15, 0.25, 0.15], scale: [1, 1.1, 1] }}
+                            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                            className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] bg-gradient-to-br from-[#5FA8A8]/20 to-transparent rounded-full blur-[100px]"
+                        />
+                        <motion.div
+                            animate={{ opacity: [0.1, 0.2, 0.1], scale: [1, 1.2, 1] }}
+                            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                            className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-gradient-to-tl from-[#A7D6D1]/10 to-transparent rounded-full blur-[80px]"
+                        />
+                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
                     </div>
 
-                    <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
-                            <span className="text-[#5FA8A8]">Filhos de Maria das Almas</span>
-                        </h1>
-                        <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-8 font-light italic">
-                            "Preservando e compartilhando os pontos da Umbanda em um só lugar."
-                        </p>
+                    <div className="container mx-auto px-6 relative z-10 pt-20 pb-12 lg:pt-0">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-                        <p className="text-base md:text-lg text-gray-400 max-w-xl mx-auto mb-10">
-                            Um aplicativo criado para facilitar o acesso às letras dos pontos, promovendo organização, respeito e valorização da tradição espiritual.
-                        </p>
+                            {/* Left Column: Text */}
+                            <div className="text-center lg:text-left flex flex-col items-center lg:items-start">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.8, ease: "easeOut" }}
+                                >
+                                    <h1 className="text-4xl md:text-6xl xl:text-7xl font-bold mb-6 tracking-tight leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+                                        Preserve a <br />
+                                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5FA8A8] to-[#A7D6D1]">Tradição e Fé</span>
+                                    </h1>
+                                </motion.div>
 
-                        {/* Updated Hero Button to scroll to downloads or download latest directly */}
-                        {/* For now, we link to the download section anchor */}
-                        <button
-                            onClick={() => document.getElementById('download')?.scrollIntoView({ behavior: 'smooth' })}
-                            className="group relative px-8 py-4 bg-[#5FA8A8] text-black font-semibold rounded-full text-lg shadow-[0_0_20px_rgba(95,168,168,0.3)] hover:shadow-[0_0_30px_rgba(95,168,168,0.5)] hover:scale-105 transition-all duration-300 flex items-center gap-2"
-                        >
-                            <Download className="w-5 h-5" />
-                            <span>Baixar Aplicativo</span>
-                            <div className="absolute inset-0 rounded-full ring-2 ring-white/20 group-hover:ring-white/40 transition-all"></div>
-                        </button>
+                                <motion.p
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                                    className="text-lg md:text-xl text-gray-400 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0"
+                                >
+                                    "O <strong className="text-white">FMA Pontos</strong> conecta você às raízes da Umbanda. Acesse letras, organize seus estudos e mantenha viva a chama do conhecimento espiritual."
+                                </motion.p>
 
-                        {/* Mockup Placeholder */}
-                        <div className="mt-16 relative w-64 md:w-80 aspect-[9/19] bg-gray-900 border-4 border-gray-800 rounded-[3rem] shadow-2xl flex items-center justify-center overflow-hidden">
-                            <div className="absolute inset-x-0 top-0 h-8 bg-gray-800 rounded-b-xl z-20 w-32 mx-auto"></div>
-                            <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 to-transparent z-10 pointer-events-none"></div>
-                            <div className="text-center p-4">
-                                <Smartphone className="w-16 h-16 text-[#5FA8A8] mx-auto mb-2 opacity-50" />
-                                <span className="text-gray-500 text-sm">App Mockup</span>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                                    className="flex flex-col items-center lg:items-start gap-6 w-full"
+                                >
+                                    <button
+                                        onClick={() => document.getElementById('download')?.scrollIntoView({ behavior: 'smooth' })}
+                                        className="group px-8 py-4 bg-[#5FA8A8] text-black font-bold rounded-2xl text-lg hover:bg-[#4E9696] transition-all shadow-[0_0_20px_rgba(95,168,168,0.2)] hover:shadow-[0_0_30px_rgba(95,168,168,0.4)] flex items-center justify-center gap-3 relative overflow-hidden w-full sm:w-auto"
+                                    >
+                                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                                        <Download className="w-5 h-5 relative z-10" />
+                                        <span className="relative z-10">Baixar Agora</span>
+                                    </button>
+
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#5FA8A8]/10 border border-[#5FA8A8]/20 text-[#5FA8A8] text-sm font-medium">
+                                        <span className="relative flex h-2 w-2">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5FA8A8] opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#5FA8A8]"></span>
+                                        </span>
+                                        Novo: Versão 1.5 Disponível
+                                    </div>
+                                </motion.div>
                             </div>
+
+                            {/* Right Column: Image */}
+                            <div className="relative flex justify-center lg:justify-center mt-12 lg:mt-0">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                    transition={{ duration: 1, ease: "easeOut" }}
+                                    className="relative z-10 w-[280px] md:w-[320px] lg:w-[360px]"
+                                >
+                                    <motion.div
+                                        animate={{ y: [-10, 10, -10] }}
+                                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                                        className="relative aspect-[9/16] rounded-[2.5rem] bg-[#0A0A0A] border-[8px] border-[#1A1A1A] shadow-2xl shadow-[#5FA8A8]/20 ring-1 ring-white/10 overflow-hidden"
+                                    >
+                                        {/* Notch */}
+                                        <div className="absolute top-0 inset-x-0 h-6 bg-[#1A1A1A] w-1/2 mx-auto rounded-b-xl z-30"></div>
+
+                                        {/* Screen Content */}
+                                        <div className="absolute inset-0 bg-gray-900 overflow-hidden">
+                                            <img
+                                                src="/screen.png"
+                                                alt="FMA Pontos App Interface"
+                                                className="w-full h-full object-cover"
+                                            />
+                                            {/* Reflection Overlay */}
+                                            <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent pointer-events-none z-20"></div>
+                                        </div>
+                                    </motion.div>
+
+                                    {/* Floating Elements behind phone */}
+                                    <motion.div
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                                        className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-dashed border-gray-800 rounded-full opacity-30"
+                                    ></motion.div>
+                                    <motion.div
+                                        animate={{ rotate: -360 }}
+                                        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                                        className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] border border-dashed border-gray-800/50 rounded-full opacity-20"
+                                    ></motion.div>
+                                </motion.div>
+                            </div>
+
                         </div>
                     </div>
                 </section>
 
                 {/* Sobre o Aplicativo */}
+                {/* Sobre o Aplicativo */}
                 <section className="py-24 bg-gradient-to-b from-[#000000] to-gray-950/50 relative">
                     <div className="container mx-auto px-6 max-w-4xl">
-                        <div className="text-center mb-16">
+                        <motion.div
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ margin: "-100px", amount: 0.3 }}
+                            transition={{ duration: 0.8 }}
+                            className="text-center mb-16"
+                        >
                             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#A7D6D1]" style={{ fontFamily: 'Playfair Display, serif' }}>
                                 Sobre o Aplicativo
                             </h2>
@@ -119,7 +198,7 @@ export default function Welcome() {
                             <p className="text-lg text-gray-300 leading-relaxed">
                                 Mais do que um aplicativo, este projeto é uma forma de preservação cultural, permitindo que praticantes e estudiosos tenham acesso rápido às letras, em qualquer lugar, diretamente no celular.
                             </p>
-                        </div>
+                        </motion.div>
                     </div>
                 </section>
 
@@ -130,7 +209,19 @@ export default function Welcome() {
                             Funcionalidades
                         </h2>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ margin: "-50px", amount: 0.1 }}
+                            variants={{
+                                hidden: { opacity: 0 },
+                                visible: {
+                                    opacity: 1,
+                                    transition: { staggerChildren: 0.1 }
+                                }
+                            }}
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                        >
                             <FeatureCard
                                 icon={<BookOpen className="w-8 h-8 text-[#5FA8A8]" />}
                                 title="Consulta de Letras"
@@ -156,7 +247,7 @@ export default function Welcome() {
                                 title="Atualizações Constantes"
                                 description="Novos conteúdos e melhorias frequentes."
                             />
-                        </div>
+                        </motion.div>
                     </div>
                 </section>
 
@@ -164,19 +255,29 @@ export default function Welcome() {
                 <section className="py-24 bg-[#050505] relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-[30%] h-[30%] bg-[#5FA8A8] rounded-full blur-[150px] opacity-5"></div>
                     <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#A7D6D1]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ amount: 0.5 }}
+                            transition={{ duration: 0.8 }}
+                            className="text-3xl md:text-4xl font-bold mb-8 text-[#A7D6D1]"
+                            style={{ fontFamily: 'Playfair Display, serif' }}
+                        >
                             Por que este aplicativo foi criado
-                        </h2>
+                        </motion.h2>
                         <div className="space-y-6 text-lg text-gray-300">
-                            <p>
+                            <motion.p initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ amount: 0.5 }} transition={{ delay: 0.2 }}>
                                 Muitos pontos de Umbanda são transmitidos oralmente ou ficam dispersos em anotações e materiais não organizados.
-                            </p>
-                            <p>
+                            </motion.p>
+                            <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ amount: 0.5 }} transition={{ delay: 0.3 }}>
                                 Este aplicativo foi criado para centralizar, preservar e facilitar o acesso a esse conhecimento, respeitando a tradição e fortalecendo a cultura.
-                            </p>
-                            <p className="font-semibold text-white mt-8 border-t border-gray-800 pt-8 inline-block">
+                            </motion.p>
+                            <motion.p
+                                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ amount: 0.5 }} transition={{ delay: 0.4 }}
+                                className="font-semibold text-white mt-8 border-t border-gray-800 pt-8 inline-block"
+                            >
                                 O projeto não possui fins comerciais e busca contribuir com a comunidade de forma aberta e acessível.
-                            </p>
+                            </motion.p>
                         </div>
                     </div>
                 </section>
@@ -190,12 +291,19 @@ export default function Welcome() {
                             <div className="absolute top-[-50%] left-[20%] w-[60%] h-[50%] bg-[#5FA8A8] rounded-full blur-[120px] opacity-10"></div>
 
                             <div className="relative z-10">
-                                <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white" style={{ fontFamily: 'Playfair Display, serif' }}>
-                                    Pronto para começar?
-                                </h2>
-                                <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-                                    Baixe agora a versão mais recente e tenha os pontos de Umbanda sempre à mão.
-                                </p>
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ amount: 0.5 }}
+                                    transition={{ duration: 0.6 }}
+                                >
+                                    <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white" style={{ fontFamily: 'Playfair Display, serif' }}>
+                                        Pronto para começar?
+                                    </h2>
+                                    <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+                                        Baixe agora a versão mais recente e tenha os pontos de Umbanda sempre à mão.
+                                    </p>
+                                </motion.div>
 
                                 {loading ? (
                                     <div className="py-12 flex flex-col items-center justify-center text-gray-500">
@@ -314,7 +422,14 @@ export default function Welcome() {
 
 function FeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
     return (
-        <div className="bg-[#0f0f0f] border border-gray-800 p-8 rounded-xl hover:border-[#5FA8A8]/30 transition-all hover:-translate-y-1 group">
+        <motion.div
+            variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 }
+            }}
+            whileHover={{ y: -5, borderColor: 'rgba(95,168,168,0.3)' }}
+            className="bg-[#0f0f0f] border border-gray-800 p-8 rounded-xl transition-all group"
+        >
             <div className="mb-6 p-4 bg-black rounded-lg inline-block border border-gray-800 group-hover:border-[#5FA8A8]/20 transition-colors">
                 {icon}
             </div>
@@ -324,6 +439,6 @@ function FeatureCard({ icon, title, description }: { icon: React.ReactNode, titl
             <p className="text-gray-400 leading-relaxed">
                 {description}
             </p>
-        </div>
+        </motion.div>
     );
 }
