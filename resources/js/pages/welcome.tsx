@@ -33,7 +33,7 @@ export default function Welcome() {
             setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
         }, 6000);
         return () => clearInterval(interval);
-    }, []);
+    }, [carouselImages.length]);
 
     const repoOwner = 'Rdinda';
     const repoName = 'FMA_Pontos';
@@ -60,10 +60,6 @@ export default function Welcome() {
                 setLoading(false);
             });
     }, []);
-
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('pt-BR');
-    };
 
     // Initialize theme on mount
     useEffect(() => {

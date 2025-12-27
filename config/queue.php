@@ -1,19 +1,14 @@
 <?php
 
 return [
+    'default' => (function (): string {
+        $queueConnection = env('QUEUE_CONNECTION', 'sync');
+        if ($queueConnection === 'database') {
+            return 'sync';
+        }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Queue Connection Name
-    |--------------------------------------------------------------------------
-    |
-    | Laravel's queue supports a variety of backends via a single, unified
-    | API, giving you convenient access to each backend using identical
-    | syntax for each. The default queue connection is defined below.
-    |
-    */
-
-    'default' => env('QUEUE_CONNECTION', 'database'),
+        return $queueConnection;
+    })(),
 
     /*
     |--------------------------------------------------------------------------
@@ -121,7 +116,14 @@ return [
     */
 
     'failed' => [
-        'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
+        'driver' => (function (): string {
+            $failedDriver = env('QUEUE_FAILED_DRIVER', 'null');
+            if (is_string($failedDriver) && str_starts_with($failedDriver, 'database')) {
+                return 'null';
+            }
+
+            return $failedDriver;
+        })(),
         'database' => env('DB_CONNECTION', 'sqlite'),
         'table' => 'failed_jobs',
     ],
