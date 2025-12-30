@@ -1,18 +1,19 @@
 FROM php:8.4-cli-alpine AS vendor
 
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev oniguruma-dev \
-    && docker-php-ext-install -j$(nproc) bcmath intl opcache pdo_mysql pdo_sqlite zip \
+    && docker-php-ext-install -j$(nproc) bcmath intl opcache zip \
     && apk del .build-deps
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
+RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader --no-scripts
 
 FROM node:22-alpine AS assets
 
 WORKDIR /app
+ENV SKIP_WAYFINDER=1
 COPY package.json package-lock.json vite.config.ts tsconfig.json ./
 COPY resources ./resources
 COPY public ./public
@@ -26,7 +27,7 @@ ENV APP_ENV=production \
 
 RUN apk add --no-cache nginx supervisor icu-libs libzip oniguruma \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev oniguruma-dev \
-    && docker-php-ext-install -j$(nproc) bcmath intl opcache pdo_mysql pdo_sqlite zip \
+    && docker-php-ext-install -j$(nproc) bcmath intl opcache zip \
     && apk del .build-deps
 
 RUN printf "%s\n" \
@@ -50,6 +51,8 @@ COPY --from=assets /app/public/build ./public/build
 
 RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
+RUN rm -f bootstrap/cache/services.php bootstrap/cache/packages.php \
+    && php artisan package:discover --ansi || true
 
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/supervisord.conf /etc/supervisord.conf
