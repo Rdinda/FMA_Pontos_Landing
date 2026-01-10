@@ -4,7 +4,6 @@ services:
       context: .
       dockerfile: Dockerfile
       target: runtime-app
-    container_name: landing-app
     environment:
       - FPM_PORT=9000
     restart: unless-stopped
@@ -18,34 +17,21 @@ services:
       context: .
       dockerfile: Dockerfile
       target: runtime-nginx
-    container_name: landing-web
     environment:
       - NGINX_PORT=80
-      - PHP_FPM_HOST=landing-app
+      - PHP_FPM_HOST=app
     depends_on:
       - app
     restart: unless-stopped
     networks:
       - landing-net
-      - dokploy-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.landing.rule=Host(${TRAEFIK_DOMAIN})"
-      - "traefik.http.routers.landing.entrypoints=websecure"
-      - "traefik.http.routers.landing.tls=true"
-      - "traefik.http.routers.landing.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.landing-http.rule=Host(${TRAEFIK_DOMAIN})"
-      - "traefik.http.routers.landing-http.entrypoints=web"
-      - "traefik.http.routers.landing-http.middlewares=redirecthttps"
-      - "traefik.http.middlewares.redirecthttps.redirectscheme.scheme=https"
-      - "traefik.http.services.landing.loadbalancer.server.port=80"
+      - landing-proxy-network
 
   supervisor:
     build:
       context: .
       dockerfile: Dockerfile
       target: runtime-supervisor
-    container_name: landing-supervisor
     depends_on:
       - app
     restart: unless-stopped
@@ -57,9 +43,9 @@ services:
 networks:
   landing-net:
     driver: bridge
-  dokploy-network:
+  landing-proxy-network:
     external: true
-    name: dokploy-network
+    name: landing-proxy-network
 
 volumes:
   storage:
