@@ -1,0 +1,55 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime-app
+    container_name: landing-app
+    environment:
+      - FPM_PORT=9000
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+    networks:
+      - landing-net
+    volumes:
+      - storage:/var/www/html/storage
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime-nginx
+    container_name: landing-web
+    environment:
+      - NGINX_PORT=8000
+      - PHP_FPM_HOST=landing-app
+    depends_on:
+      - app
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - landing-net
+
+  supervisor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime-supervisor
+    container_name: landing-supervisor
+    depends_on:
+      - app
+    restart: unless-stopped
+    networks:
+      - landing-net
+    volumes:
+      - storage:/var/www/html/storage
+
+networks:
+  landing-net:
+    driver: bridge
+
+volumes:
+  storage:
+    driver: local

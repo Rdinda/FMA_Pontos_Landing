@@ -127,7 +127,8 @@ ENV APP_ENV=production \
 RUN apk add --no-cache supervisor icu-libs libzip oniguruma \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev oniguruma-dev \
     && docker-php-ext-install -j$(nproc) bcmath intl opcache zip \
-    && apk del .build-deps
+    && apk del .build-deps \
+    && addgroup -S app && adduser -S -G app -u 1000 app
 
 WORKDIR /var/www/html
 
@@ -135,7 +136,7 @@ COPY . .
 COPY --from=vendor /app/vendor ./vendor
 
 RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
+    && chown -R app:app storage bootstrap/cache
 RUN rm -f bootstrap/cache/services.php bootstrap/cache/packages.php \
     && php artisan package:discover --ansi || true
 
